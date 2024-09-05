@@ -10,7 +10,7 @@ const MentorStudentsPage = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/mentors/${mentorId}/students`);
+        const response = await fetch(`https://mentor-student-assigning-backend.onrender.com/mentors/${mentorId}/students`);
         if (!response.ok) throw new Error('Failed to fetch students');
         const data = await response.json();
         setStudents(data.data);

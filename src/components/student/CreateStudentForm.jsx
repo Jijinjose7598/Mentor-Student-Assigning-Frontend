@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import '../../App.css'; // Assuming you have a CSS file for the styles
 
-const CreateStudentForm = ({ onAddMentor, onClose }) => {
+const CreateStudentForm = ({ onAddStudent, onClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/students/create', {
+      const response = await fetch('https://mentor-student-assigning-backend.onrender.com/students/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -16,8 +16,8 @@ const CreateStudentForm = ({ onAddMentor, onClose }) => {
         body: JSON.stringify({ name, email }),
       });
       if (response.ok) {
-        const newMentor = await response.json();
-        onAddMentor(newMentor); // Call the function to add the new mentor to the table
+        const newStudent = await response.json();
+        onAddStudent(newStudent); // Call the function to add the new mentor to the table
         onClose();
       } else {
         console.error('Failed to create mentor');

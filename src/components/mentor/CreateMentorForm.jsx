@@ -4,21 +4,22 @@ import '../../App.css'; // Assuming you have a CSS file for the styles
 const CreateMentorForm = ({ onAddMentor, onClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [studentId, setStudentId] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/mentors/create', {
+      const response = await fetch('https://mentor-student-assigning-backend.onrender.com/mentors/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, studentId }),
       });
       if (response.ok) {
         const newMentor = await response.json();
         onAddMentor(newMentor); // Call the function to add the new mentor to the table
-        onClose();
+        onClose(); // Close the form after successful submission
       } else {
         console.error('Failed to create mentor');
       }
@@ -56,6 +57,8 @@ const CreateMentorForm = ({ onAddMentor, onClose }) => {
             type="text"
             className="form-control"
             id="exampleInputStudentId"
+            value={studentId}
+            onChange={(e) => setStudentId(e.target.value)}
           />
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>

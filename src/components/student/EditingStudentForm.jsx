@@ -12,7 +12,7 @@ const EditingStudentForm = ({ onUpdateStudent }) => {
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/students/student/${studentId}`);
+        const response = await fetch(`https://mentor-student-assigning-backend.onrender.com/students/student/${studentId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch student data');
         }
@@ -27,36 +27,44 @@ const EditingStudentForm = ({ onUpdateStudent }) => {
     fetchStudent();
   }, [studentId]);
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const updateData = { ...student };
-    if (newMentorId) {
-      updateData.mentorId = Array.isArray(student.mentorId) ? [...student.mentorId, newMentorId] : [newMentorId];
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const updateData = { ...student };
+      
+      // Only update mentorId if newMentorId is provided
+      if (newMentorId) {
+        updateData.mentorId = Array.isArray(student.mentorId) ? [...student.mentorId, newMentorId] : [newMentorId];
+      }
 
-    const response = await fetch(`http://localhost:3000/students/update/student/${student._id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updateData),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to update student data');
-    }
-    const result = await response.json();
-    if (typeof onUpdateStudent === 'function') {
-      onUpdateStudent(result.data);
-    } else {
-      console.error('onUpdateStudent is not a function');
-    }
-    navigate('/students');
-  } catch (err) {
-    setError(err.message);
-  }
-};
+      // Log the data being sent for debugging purposes
+      console.log('Update data being sent:', updateData);
 
+      const response = await fetch(`https://mentor-student-assigning-backend.onrender.com/students/update/student/${student._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateData),
+      });
+
+      const result = await response.json();
+      console.log('Server response:', result); // Log the response for debugging
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to update student data');
+      }
+
+      if (typeof onUpdateStudent === 'function') {
+        onUpdateStudent(result.data);
+      } else {
+        console.error('onUpdateStudent is not a function');
+      }
+      navigate('/students');
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -116,7 +124,6 @@ const EditingStudentForm = ({ onUpdateStudent }) => {
           name="newMentorId"
           value={newMentorId}
           onChange={(e) => setNewMentorId(e.target.value)}
-          
         />
       </div>
       <button type="submit" className="btn btn-primary">Update</button>

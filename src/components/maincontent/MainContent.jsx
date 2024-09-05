@@ -19,7 +19,7 @@ const MainContent = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await fetch('http://localhost:3000/students');
+        const response = await fetch('https://mentor-student-assigning-backend.onrender.com/students');
         const data = await response.json();
         setStudents(data.data || []);
       } catch (error) {
@@ -30,16 +30,26 @@ const MainContent = () => {
   }, []);
 
   useEffect(() => {
-    const fetchMentors = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/mentors');
-        const data = await response.json();
-        setMentors(data.data || []);
-      } catch (error) {
-        console.error('Error fetching mentors:', error);
-      }
+   const fetchMentors = async () => {
+  try {
+    const response = await fetch('https://mentor-student-assigning-backend.onrender.com/mentors', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // credentials: 'include' // Uncomment if you are dealing with cookies or authentication
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    setMentors(data.data || []);
+  } catch (error) {
+    console.error('Error fetching mentors:', error);
+  }
     };
     fetchMentors();
+
   }, []);
 
   const handleButtonClick = () => {
@@ -64,7 +74,7 @@ const MainContent = () => {
 
   const handleDeleteStudent = async (studentId) => {
     try {
-      const response = await fetch(`http://localhost:3000/students/delete/${studentId}`, {
+      const response = await fetch(`https://mentor-student-assigning-backend.onrender.com/students/delete/${studentId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -82,7 +92,7 @@ const MainContent = () => {
 
   const handleDeleteMentor = async (mentorId) => {
     try {
-      const response = await fetch(`http://localhost:3000/mentors/delete/${mentorId}`, {
+      const response = await fetch(`https://mentor-student-assigning-backend.onrender.com/mentors/delete/${mentorId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

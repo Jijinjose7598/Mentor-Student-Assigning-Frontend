@@ -10,7 +10,7 @@ const PreviousMentorPage = () => {
   useEffect(() => {
     const fetchPreviousMentors = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/students/${studentId}/previous-mentors`);
+        const response = await fetch(`https://mentor-student-assigning-backend.onrender.com/students/${studentId}/previous-mentors`);
         if (!response.ok) {
           throw new Error('Failed to fetch previous mentors');
         }

@@ -12,7 +12,7 @@ const EditMentorForm = ({ onUpdateMentor }) => {
   useEffect(() => {
     const fetchMentor = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/mentors/mentor/${mentorId}`);
+        const response = await fetch(`https://mentor-student-assigning-backend.onrender.com/mentors/mentor/${mentorId}`);
         if (!response.ok) throw new Error('Failed to fetch mentor data');
         const data = await response.json();
         setMentor({ ...data.data, studentsId: data.data.studentsId || [''] });
@@ -29,7 +29,7 @@ const EditMentorForm = ({ onUpdateMentor }) => {
     e.preventDefault();
     const updatedStudentsId = [...new Set([ newStudentId])];
     try {
-      const response = await fetch(`http://localhost:3000/mentors/update/mentor/${mentor._id}`, {
+      const response = await fetch(`https://mentor-student-assigning-backend.onrender.com/mentors/update/mentor/${mentor._id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...mentor, studentsId: updatedStudentsId }),

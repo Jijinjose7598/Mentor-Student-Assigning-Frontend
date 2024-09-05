@@ -9,7 +9,7 @@ const NoMentorStudentsPage = () => {
   useEffect(() => {
     const fetchStudentsWithNoMentors = async () => {
       try {
-        const response = await fetch('http://localhost:3000/students/all-students/without-mentors');
+        const response = await fetch('https://mentor-student-assigning-backend.onrender.com/students/all-students/without-mentors');
         if (!response.ok) {
           throw new Error('Failed to fetch students');
         }
